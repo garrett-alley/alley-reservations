@@ -1,0 +1,634 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;The Alley – Reservations Board&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>:root {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color-scheme: dark;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--bg: #020617;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--bg-alt: #020617;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--bg-card: #020617;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--border: #1e293b;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--text: #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--muted: #9ca3af;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--accent: #38bdf8;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--danger: #f97373;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--warning: #facc15;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--success: #22c55e;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>* { box-sizing: border-box; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: radial-gradient(circle at top, #1e293b 0, #020617 55%);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>min-height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>header {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 12px 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-bottom: 1px solid #1f2937;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(15,23,42,0.9);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>backdrop-filter: blur(8px);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position: sticky;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>top: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>z-index: 10;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>header h1 {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.1rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.header-left { display: flex; flex-direction: column; gap: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.header-row {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.label {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: .06em;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input[type="date"] {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #020617;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 4px 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.85rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>button {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 6px 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #0f172a;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>button:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #1f2937;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.pill {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 4px 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #020617;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.pill strong { font-weight: 600; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>main {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow-y: auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.error {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #7f1d1d;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #fecaca;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 8px 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.85rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.reservations {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: rgba(15,23,42,0.9);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px 10px 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card.conflict {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-color: var(--danger);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 0 0 1px rgba(248,113,113,0.5);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card-top {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: flex-start;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-chip {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 4px 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>white-space: nowrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #0b1120;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-Pending { background: #6b7280; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-Confirmed { background: #2563eb; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-Arrived { background: #16a34a; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-In\ Progress { background: #d97706; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-Completed { background: #7c3aed; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-Cancelled { background: #dc2626; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card-main {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>min-width: 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card-header-row {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.group-name {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.95rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>white-space: nowrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-overflow: ellipsis;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.time-range {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>white-space: nowrap;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card-line {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.badge {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 1px 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #0b1120;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #1f2937;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.badge.warn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-color: var(--danger);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #fecaca;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.conflict-note {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #fecaca;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card-actions {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-top: 1px solid rgba(55,65,81,0.6);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding-top: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.headcount-group {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.headcount-group span.value {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>min-width: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.mini-btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 2px 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #020617;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-buttons {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-small-btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 2px 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #020617;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status-small-btn.active {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--accent);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-color: var(--accent);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #0b1120;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.empty {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 40px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>@media (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>header {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>padding: 10px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>main {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>padding: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>max-width: 900px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;header&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="header-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1&gt;The Alley – Reservations&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="header-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="label"&gt;Date&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="date" id="dateInput" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="header-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="pill" id="bookingCount"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="label"&gt;Bookings&lt;/span&gt; &lt;strong&gt;0&lt;/strong&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="pill" id="guestCount"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="label"&gt;Guests&lt;/span&gt; &lt;strong&gt;0&lt;/strong&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="margin-left:auto; display:flex; flex-direction:column; gap:4px; align-items:flex-end;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="refreshBtn"&gt;Refresh&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="lastUpdated" class="label"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="error" class="error" style="display:none;"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;main&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="reservations" class="reservations"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="emptyState" class="empty" style="display:none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>No reservations for this date.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>// === CONFIG ===</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const API_URL = 'https://script.google.com/macros/s/AKfycbxFRiZo4H6RBgyXP8L9W61OgbpLOMqhKcES-gOjOAYmCWGGnqUSgdrY7pJ_lQfhsX6z/exec'; // &lt;-- change this</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const statusOrder = [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>'Pending',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>'Confirmed',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>'Arrived',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>'In Progress',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>'Completed',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>'Cancelled',</p>
+<p class="p1"><span class="Apple-converted-space">    </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function isoToday() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const d = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return d.toISOString().slice(0, 10);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function setDateInputDefault() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const input = document.getElementById('dateInput');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!input.value) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input.value = isoToday();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function formatTimeValue(value) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!value) return '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// If Apps Script serialises Date, it will be an ISO timestamp string</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const d = new Date(value);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!isNaN(d.getTime())) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return d.toLocaleTimeString(undefined, {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>hour: 'numeric',</p>
+<p class="p1"><span class="Apple-converted-space">          </span>minute: '2-digit',</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return String(value);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function fetchReservations(dateStr) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const res = await fetch(API_URL + '?date=' + encodeURIComponent(dateStr));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!res.ok) throw new Error('HTTP ' + res.status);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return await res.json();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function updateReservation(rowIndex, updates) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const res = await fetch(API_URL, {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headers: { 'Content-Type': 'application/json' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body: JSON.stringify({ rowIndex, updates }),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const data = await res.json().catch(() =&gt; ({}));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!data.ok) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>throw new Error(data.error || 'Update failed');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function showError(msg) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const el = document.getElementById('error');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>el.textContent = msg;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>el.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function clearError() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const el = document.getElementById('error');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>el.style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function updateHeaderStats(reservations) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const bookingCountEl = document.getElementById('bookingCount');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const guestCountEl = document.getElementById('guestCount');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>bookingCountEl.querySelector('strong').textContent = reservations.length;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const totalGuests = reservations.reduce(</p>
+<p class="p1"><span class="Apple-converted-space">        </span>(sum, r) =&gt; sum + (Number(r.headcount) || 0),</p>
+<p class="p1"><span class="Apple-converted-space">        </span>0</p>
+<p class="p1"><span class="Apple-converted-space">      </span>);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>guestCountEl.querySelector('strong').textContent = totalGuests;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function renderReservations(reservations) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const container = document.getElementById('reservations');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const emptyState = document.getElementById('emptyState');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>container.innerHTML = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!reservations.length) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>emptyState.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>emptyState.style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>// sort by start time string</p>
+<p class="p1"><span class="Apple-converted-space">      </span>reservations.sort((a, b) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const sA = String(a.start || '');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const sB = String(b.start || '');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return sA.localeCompare(sB);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>reservations.forEach((r) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const status = r.status || 'Pending';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const hasConflict = r.conflict === 'CONFLICT';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const card = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>card.className = 'card' + (hasConflict ? ' conflict' : '');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const top = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>top.className = 'card-top';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const statusChip = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>statusChip.className = 'status-chip status-' + status.replace(' ', '\\ ');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>statusChip.textContent = status;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>top.appendChild(statusChip);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const main = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>main.className = 'card-main';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const headerRow = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headerRow.className = 'card-header-row';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const groupName = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>groupName.className = 'group-name';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>groupName.textContent = r.groupName || '(No name)';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const timeRange = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>timeRange.className = 'time-range';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>timeRange.textContent =</p>
+<p class="p1"><span class="Apple-converted-space">          </span>(formatTimeValue(r.start) || '?') +</p>
+<p class="p1"><span class="Apple-converted-space">          </span>' – ' +</p>
+<p class="p1"><span class="Apple-converted-space">          </span>(formatTimeValue(r.end) || '?');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>headerRow.appendChild(groupName);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headerRow.appendChild(timeRange);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>main.appendChild(headerRow);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const infoLine = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>infoLine.className = 'card-line';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const activity = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>activity.textContent = r.activity || 'Unknown';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const dot1 = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>dot1.textContent = '·';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const venue = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>venue.textContent = r.venue || 'No venue';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>infoLine.appendChild(activity);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>infoLine.appendChild(dot1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>infoLine.appendChild(venue);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (r.headcount) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const dot2 = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>dot2.textContent = '·';</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const guests = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>guests.textContent = r.headcount + ' guests';</p>
+<p class="p1"><span class="Apple-converted-space">          </span>infoLine.appendChild(dot2);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>infoLine.appendChild(guests);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>main.appendChild(infoLine);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const secondLine = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>secondLine.className = 'card-line';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (r.effectiveLanes &amp;&amp; Number(r.effectiveLanes) &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const badge = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>badge.className = 'badge';</p>
+<p class="p1"><span class="Apple-converted-space">          </span>badge.textContent =</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'🎳 ' +</p>
+<p class="p1"><span class="Apple-converted-space">            </span>r.effectiveLanes +</p>
+<p class="p1"><span class="Apple-converted-space">            </span>' lane' +</p>
+<p class="p1"><span class="Apple-converted-space">            </span>(r.effectiveLanes &gt; 1 ? 's' : '');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>secondLine.appendChild(badge);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (r.effectiveTables &amp;&amp; Number(r.effectiveTables) &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const badge = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>badge.className = 'badge';</p>
+<p class="p1"><span class="Apple-converted-space">          </span>badge.textContent =</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'🎱 ' +</p>
+<p class="p1"><span class="Apple-converted-space">            </span>r.effectiveTables +</p>
+<p class="p1"><span class="Apple-converted-space">            </span>' table' +</p>
+<p class="p1"><span class="Apple-converted-space">            </span>(r.effectiveTables &gt; 1 ? 's' : '');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>secondLine.appendChild(badge);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (r.foodPackages) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const badge = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>badge.className = 'badge';</p>
+<p class="p1"><span class="Apple-converted-space">          </span>badge.textContent = '🍽 ' + r.foodPackages;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>secondLine.appendChild(badge);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>main.appendChild(secondLine);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (hasConflict) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const conflictNote = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>conflictNote.className = 'conflict-note';</p>
+<p class="p1"><span class="Apple-converted-space">          </span>conflictNote.textContent =</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'Capacity conflict – check lanes, tables, or headcount.';</p>
+<p class="p1"><span class="Apple-converted-space">          </span>main.appendChild(conflictNote);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (r.notes) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const notes = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>notes.className = 'card-line';</p>
+<p class="p1"><span class="Apple-converted-space">          </span>notes.textContent = 'Notes: ' + r.notes;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>main.appendChild(notes);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>top.appendChild(main);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>card.appendChild(top);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Actions</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const actions = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>actions.className = 'card-actions';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Headcount adjustors</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const headGroup = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headGroup.className = 'headcount-group';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const headLabel = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headLabel.textContent = 'Headcount:';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headGroup.appendChild(headLabel);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const minusBtn = document.createElement('button');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>minusBtn.className = 'mini-btn';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>minusBtn.textContent = '−';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>minusBtn.onclick = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const current = Number(r.headcount) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const next = Math.max(0, current - 1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>await updateReservation(r.rowIndex, { headcount: next });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadAndRender();</p>
+<p class="p1"><span class="Apple-converted-space">          </span>} catch (err) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>console.error(err);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showError('Failed to update headcount');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headGroup.appendChild(minusBtn);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const headValue = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headValue.className = 'value';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headValue.textContent = r.headcount || 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headGroup.appendChild(headValue);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const plusBtn = document.createElement('button');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>plusBtn.className = 'mini-btn';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>plusBtn.textContent = '+';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>plusBtn.onclick = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const current = Number(r.headcount) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const next = current + 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>await updateReservation(r.rowIndex, { headcount: next });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadAndRender();</p>
+<p class="p1"><span class="Apple-converted-space">          </span>} catch (err) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>console.error(err);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showError('Failed to update headcount');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headGroup.appendChild(plusBtn);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>actions.appendChild(headGroup);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Status buttons</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const statusButtons = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>statusButtons.className = 'status-buttons';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>statusOrder.forEach((s) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const btn = document.createElement('button');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>btn.className =</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'status-small-btn' + (s === status ? ' active' : '');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>btn.textContent = s;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>btn.onclick = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>await updateReservation(r.rowIndex, { status: s });</p>
+<p class="p1"><span class="Apple-converted-space">              </span>loadAndRender();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (err) {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>console.error(err);</p>
+<p class="p1"><span class="Apple-converted-space">              </span>showError('Failed to update status');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>};</p>
+<p class="p1"><span class="Apple-converted-space">          </span>statusButtons.appendChild(btn);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>actions.appendChild(statusButtons);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>card.appendChild(actions);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>container.appendChild(card);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function loadAndRender() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>clearError();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const date = document.getElementById('dateInput').value || isoToday();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const data = await fetchReservations(date);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const reservations = data.reservations || [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>updateHeaderStats(reservations);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>renderReservations(reservations);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const lastUpdatedEl = document.getElementById('lastUpdated');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const now = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>lastUpdatedEl.textContent = 'Updated ' + now.toLocaleTimeString();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (err) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>console.error(err);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>showError('Failed to load reservations');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function setup() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setDateInputDefault();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.getElementById('dateInput')</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.addEventListener('change', loadAndRender);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.getElementById('refreshBtn')</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.addEventListener('click', loadAndRender);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>loadAndRender();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// auto-refresh every 30s</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setInterval(loadAndRender, 30000);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('DOMContentLoaded', setup);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
