@@ -271,8 +271,8 @@
 </main>
 
 <script>
-  // IMPORTANT: use your /exec URL here, NOT the googleusercontent echo URL
-  const API_URL = "https://script.google.com/macros/s/AKfycbxofa6eTuIUhimGAiyvXkgACBmEQkB1SAEXzO3EOiFxN81rUTlbTGzkSMgbxEh-DhR0/exec";
+  // PUT YOUR /exec URL HERE
+  const API_URL = "https://script.google.com/macros/s/XXXXXXXXXXXX/exec";
 
   const statusOrder = ["Pending","Confirmed","Arrived","In Progress","Completed","Cancelled"];
 
@@ -281,9 +281,11 @@
     return d.toISOString().slice(0, 10);
   }
 
-  function buildUrlWithDate(dateStr) {
-    const sep = API_URL.includes("?") ? "&" : "?";
-    return API_URL + sep + "date=" + encodeURIComponent(dateStr);
+  function toYMD(value) {
+    if (!value) return null;
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return null;
+    return d.toISOString().slice(0, 10);
   }
 
   function showError(msg) {
@@ -297,28 +299,26 @@
     el.style.display = "none";
   }
 
-  async function fetchReservations(dateStr) {
-    const res = await fetch(buildUrlWithDate(dateStr));
+  async function fetchReservationsRaw() {
+    const res = await fetch(API_URL);
     if (!res.ok) throw new Error("HTTP " + res.status);
     return res.json();
   }
 
-async function updateReservation(rowIndex, updates) {
-  // Fire-and-forget update to Apps Script to avoid CORS issues.
-  // We don't parse the response; we just assume it went through.
-  try {
-    await fetch(API_URL, {
-      method: "POST",
-      mode: "no-cors",                // <-- important for cross-origin
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rowIndex, updates })
-    });
-    // We can't inspect the response in no-cors mode, so no checks here.
-  } catch (err) {
-    console.error("Update error:", err);
-    throw err; // let callers show a generic error if needed
+  // Fire-and-forget update to avoid CORS headaches
+  async function updateReservation(rowIndex, updates) {
+    try {
+      await fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rowIndex, updates })
+      });
+    } catch (err) {
+      console.error("Update error:", err);
+      throw err;
+    }
   }
-}
 
   function updateHeaderStats(reservations) {
     const bookingCountEl = document.getElementById("bookingCount");
@@ -332,40 +332,6 @@ async function updateReservation(rowIndex, updates) {
     guestCountEl.querySelector("strong").textContent = totalGuests;
   }
 
-// Headcount minus
-minusBtn.onclick = async () => {
-  try {
-    const current = Number(r.headcount) || 0;
-    const next = Math.max(0, current - 1);
-    await updateReservation(r.rowIndex, { headcount: next });
-    load();
-  } catch (err) {
-    showError("Failed to update headcount");
-  }
-};
-
-// Headcount plus
-plusBtn.onclick = async () => {
-  try {
-    const current = Number(r.headcount) || 0;
-    const next = current + 1;
-    await updateReservation(r.rowIndex, { headcount: next });
-    load();
-  } catch (err) {
-    showError("Failed to update headcount");
-  }
-};
-
-// Status button
-btn.onclick = async () => {
-  try {
-    await updateReservation(r.rowIndex, { status: s });
-    load();
-  } catch (err) {
-    showError("Failed to update status");
-  }
-};
-  
   function render(reservations) {
     const container = document.getElementById("reservations");
     const emptyState = document.getElementById("emptyState");
@@ -467,7 +433,7 @@ btn.onclick = async () => {
           await updateReservation(r.rowIndex, { headcount: next });
           load();
         } catch (err) {
-          showError("Failed to update headcount: " + err.message);
+          showError("Failed to update headcount");
         }
       };
       headGroup.appendChild(minusBtn);
@@ -487,7 +453,7 @@ btn.onclick = async () => {
           await updateReservation(r.rowIndex, { headcount: next });
           load();
         } catch (err) {
-          showError("Failed to update headcount: " + err.message);
+          showError("Failed to update headcount");
         }
       };
       headGroup.appendChild(plusBtn);
@@ -506,7 +472,7 @@ btn.onclick = async () => {
             await updateReservation(r.rowIndex, { status: s });
             load();
           } catch (err) {
-            showError("Failed to update status: " + err.message);
+            showError("Failed to update status");
           }
         };
         statusButtons.appendChild(btn);
@@ -522,11 +488,16 @@ btn.onclick = async () => {
   async function load() {
     clearError();
     const dateInput = document.getElementById("dateInput");
-    const date = dateInput.value || isoToday();
+    const selectedDate = dateInput.value || isoToday();
 
     try {
-      const data = await fetchReservations(date);
-      render(data.reservations || []);
+      const data = await fetchReservationsRaw();
+      const all = data.reservations || [];
+
+      // Filter by date on the front-end
+      const filtered = all.filter(r => toYMD(r.date) === selectedDate);
+
+      render(filtered);
       const lastUpdatedEl = document.getElementById("lastUpdated");
       lastUpdatedEl.textContent = "Updated " + new Date().toLocaleTimeString();
     } catch (err) {
