@@ -271,8 +271,8 @@
 </main>
 
 <script>
-  // Your live Apps Script web app URL
-  const API_URL = "https://script.googleusercontent.com/a/macros/bowlingthealley.com/echo?user_content_key=AehSKLhBPZ1p4U7kxoENh67T_quiFVxPmStEwxte-hcRhGv8wHNYnKjlavdLhnSNMm4yUnAMmkSFp7k66j74NAmXwoQ3PNBbuCvPZp-L0Ok6o6yAyNh4J4r_6UDbwo8x4SnZcDfhWXE0v_bqiATcxe6y4h9QbiSZK7VVjTTCNWyMEYbjt457dy4kq9LRDu106P54sIH_SABaRdVoXFOEeL2kgSkJLTdTOIXUOtwgYL_D858zqFkSS3NuJ5Y2b8OoUDEaEGRtEytOoWfxUj1l01E4T4nf6MFU95mLFU0GGBjd873IeRB9VCstrSbiouS1CQ&lib=MWiKWnO96xztHNyACjkP5i0v00OJaB9oq";
+  // IMPORTANT: use your /exec URL here, NOT the googleusercontent echo URL
+  const API_URL = "EXEC_WEB_APP_URL_HERE";
 
   const statusOrder = ["Pending","Confirmed","Arrived","In Progress","Completed","Cancelled"];
 
@@ -304,16 +304,29 @@
   }
 
   async function updateReservation(rowIndex, updates) {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rowIndex, updates })
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!data.ok) {
-      throw new Error(data.error || "Update failed");
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rowIndex, updates })
+      });
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        console.error("Non-JSON response from Apps Script:", text);
+        throw new Error("Update failed (bad response format)");
+      }
+      if (!data.ok) {
+        console.error("Apps Script error:", data.error);
+        throw new Error(data.error || "Update failed");
+      }
+      return data;
+    } catch (err) {
+      console.error("Update error:", err);
+      throw err;
     }
-    return data;
   }
 
   function updateHeaderStats(reservations) {
@@ -342,7 +355,6 @@
       emptyState.style.display = "none";
     }
 
-    // Sort by Start time as string
     reservations.sort((a, b) => String(a.start || "").localeCompare(String(b.start || "")));
 
     updateHeaderStats(reservations);
@@ -410,11 +422,9 @@
         card.appendChild(conflictMsg);
       }
 
-      // Actions
       const actions = document.createElement("div");
       actions.className = "card-actions";
 
-      // Headcount controls
       const headGroup = document.createElement("div");
       headGroup.className = "headcount-group";
 
@@ -432,8 +442,7 @@
           await updateReservation(r.rowIndex, { headcount: next });
           load();
         } catch (err) {
-          console.error(err);
-          showError("Failed to update headcount");
+          showError("Failed to update headcount: " + err.message);
         }
       };
       headGroup.appendChild(minusBtn);
@@ -453,15 +462,13 @@
           await updateReservation(r.rowIndex, { headcount: next });
           load();
         } catch (err) {
-          console.error(err);
-          showError("Failed to update headcount");
+          showError("Failed to update headcount: " + err.message);
         }
       };
       headGroup.appendChild(plusBtn);
 
       actions.appendChild(headGroup);
 
-      // Status buttons
       const statusButtons = document.createElement("div");
       statusButtons.className = "status-buttons";
 
@@ -474,8 +481,7 @@
             await updateReservation(r.rowIndex, { status: s });
             load();
           } catch (err) {
-            console.error(err);
-            showError("Failed to update status");
+            showError("Failed to update status: " + err.message);
           }
         };
         statusButtons.appendChild(btn);
@@ -500,24 +506,18 @@
       lastUpdatedEl.textContent = "Updated " + new Date().toLocaleTimeString();
     } catch (err) {
       console.error(err);
-      showError("Failed to load reservations");
+      showError("Failed to load reservations: " + err.message);
     }
   }
 
   function setup() {
     const dateInput = document.getElementById("dateInput");
     dateInput.value = isoToday();
-
-    // Reload when date changes
     dateInput.addEventListener("change", load);
 
-    // Manual refresh button
     document.getElementById("refreshBtn").onclick = load;
 
-    // Initial load
     load();
-
-    // Auto-refresh every 30s
     setInterval(load, 30000);
   }
 
