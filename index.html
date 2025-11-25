@@ -303,31 +303,22 @@
     return res.json();
   }
 
-  async function updateReservation(rowIndex, updates) {
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rowIndex, updates })
-      });
-      const text = await res.text();
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        console.error("Non-JSON response from Apps Script:", text);
-        throw new Error("Update failed (bad response format)");
-      }
-      if (!data.ok) {
-        console.error("Apps Script error:", data.error);
-        throw new Error(data.error || "Update failed");
-      }
-      return data;
-    } catch (err) {
-      console.error("Update error:", err);
-      throw err;
-    }
+async function updateReservation(rowIndex, updates) {
+  // Fire-and-forget update to Apps Script to avoid CORS issues.
+  // We don't parse the response; we just assume it went through.
+  try {
+    await fetch(API_URL, {
+      method: "POST",
+      mode: "no-cors",                // <-- important for cross-origin
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rowIndex, updates })
+    });
+    // We can't inspect the response in no-cors mode, so no checks here.
+  } catch (err) {
+    console.error("Update error:", err);
+    throw err; // let callers show a generic error if needed
   }
+}
 
   function updateHeaderStats(reservations) {
     const bookingCountEl = document.getElementById("bookingCount");
@@ -341,6 +332,40 @@
     guestCountEl.querySelector("strong").textContent = totalGuests;
   }
 
+// Headcount minus
+minusBtn.onclick = async () => {
+  try {
+    const current = Number(r.headcount) || 0;
+    const next = Math.max(0, current - 1);
+    await updateReservation(r.rowIndex, { headcount: next });
+    load();
+  } catch (err) {
+    showError("Failed to update headcount");
+  }
+};
+
+// Headcount plus
+plusBtn.onclick = async () => {
+  try {
+    const current = Number(r.headcount) || 0;
+    const next = current + 1;
+    await updateReservation(r.rowIndex, { headcount: next });
+    load();
+  } catch (err) {
+    showError("Failed to update headcount");
+  }
+};
+
+// Status button
+btn.onclick = async () => {
+  try {
+    await updateReservation(r.rowIndex, { status: s });
+    load();
+  } catch (err) {
+    showError("Failed to update status");
+  }
+};
+  
   function render(reservations) {
     const container = document.getElementById("reservations");
     const emptyState = document.getElementById("emptyState");
